@@ -56,6 +56,8 @@ static const Rule rules[] = {
 	{"Dwarf_Fortress",      NULL,           NULL,         0,          0,          0,         1,      -1 },
 	{"qtwaw",               NULL,           NULL,    1 << 2,          0,          0,         0,      -1 },
 	{"Brave-browser",       NULL,           NULL,    1 << 1,          0,          0,         0,      -1 },
+	{"Steam",               NULL,           NULL,    1 << 3,          0,          0,         1,      -1 },
+	{"Blender",             NULL,           NULL,         0,          0,          0,         1,      -1 },
 	};
 
 	/* layout(s) */
