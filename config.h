@@ -58,6 +58,8 @@ static const Rule rules[] = {
 	{"Brave-browser",       NULL,           NULL,    1 << 1,          0,          0,         0,      -1 },
 	{"Steam",               NULL,           NULL,    1 << 3,          0,          0,         1,      -1 },
 	{"Blender",             NULL,           NULL,         0,          0,          0,         1,      -1 },
+	{"qTox",	        	NULL,		    NULL,	 1 << 2,	      0,	      0,	     1, 	 -1 },
+	{"Element",             NULL,			NULL,    1 << 2,          0,          0,		 1,		 -1 },
 	};
 
 	/* layout(s) */
