@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+/* Constants */
+#define TERMINAL "st"
+#define TERMCLASS "St"
+
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -24,21 +28,21 @@ static char selfgcolor[]            = "#eeeeee";
 static char selbordercolor[]        = "#770000";
 static char selbgcolor[]            = "#005577";
 static char *colors[][3] = {
-	/*               fg           bg           border   */
-	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
-	[SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+       /*               fg           bg           border   */
+       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
+       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 
 typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
+const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd2[] = {TERMINAL, "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
-	{"spranger",    spcmd2},
+	{"spcalc",      spcmd2},
 };
 
 /* tagging */
@@ -49,35 +53,35 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* { class,            instance,          title, tags mask, isfloating, isterminal, noswallow, monitor }, */
-	{ "Gimp",               NULL,           NULL,    1 << 8,          0,          0,         0,      -1 },
-	{ "St",                 NULL,           NULL,         0,          0,          1,         0,      -1 },
-	{ NULL,                 NULL, "Event Tester",         0,          0,          0,         1,      -1 },
-	{ NULL,             "spterm",           NULL,  SPTAG(0),          1,          1,         0,      -1 },
-	{ NULL,             "spcalc",           NULL,  SPTAG(1),          1,          1,         0,      -1 },
-	{"discord",             NULL,           NULL,    1 << 2,          0,          0,         0,      -1 },
-	{"TelegramDesktop",     NULL,           NULL,    1 << 2,          0,          0,         0,      -1 },
-	{"Dwarf_Fortress",      NULL,           NULL,         0,          0,          0,         1,      -1 },
-	{"qtwaw",               NULL,           NULL,    1 << 2,          0,          0,         0,      -1 },
-	{"Brave-browser",       NULL,           NULL,    1 << 1,          0,          0,         0,      -1 },
-	{"Steam",               NULL,           NULL,    1 << 3,          0,          0,         1,      -1 },
-	{"Blender",             NULL,           NULL,         0,          0,          0,         1,      -1 },
-	{"qTox",			NULL,		    NULL,	 1 << 2,	      0,	      0,	     1,		 -1 },
-	{"Element",             NULL,			NULL,    1 << 2,          0,          0,		 1,		 -1 },
+	/* { class,            instance, title,          tags mask, isfloating, isterminal, noswallow, monitor }, */
+	{ "Gimp",           NULL,     NULL,           1 << 8,    0,          0,          0,         -1 },
+	{ "St",             NULL,     NULL,           0,         0,          1,          0,         -1 },
+	{ NULL,             NULL,     "Event Tester", 0,         0,          0,          1,         -1 },
+	{ NULL,             "spterm", NULL,           SPTAG(0),  1,          1,          0,         -1 },
+	{ NULL,             "spcalc", NULL,           SPTAG(1),  1,          1,          0,         -1 },
+	{"discord",         NULL,     NULL,           1 << 2,    0,          0,          0,         -1 },
+	{"TelegramDesktop", NULL,     NULL,           1 << 2,    0,          0,          0,         -1 },
+	{"Dwarf_Fortress",  NULL,     NULL,           0,         0,          0,          1,         -1 },
+	{"qtwaw",           NULL,     NULL,           1 << 2,    0,          0,          0,         -1 },
+	{"Brave-browser",   NULL,     NULL,           1 << 1,    0,          0,          0,         -1 },
+	{"Steam",           NULL,     NULL,           1 << 3,    0,          0,          1,         -1 },
+	{"Blender",         NULL,     NULL,           0,         0,          0,          1,         -1 },
+	{"qTox",            NULL,     NULL,           1 << 2,    0,          0,          1,         -1 },
+	{"Element",         NULL,     NULL,           1 << 2,    0,          0,          1,         -1 },
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static int nmaster     = 1;    /* number of clients in master area */
+static int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
+#include "gaplessgrid.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[M]",	monocle },		/* All windows on top of eachother */
 	{ "[]=",	tile },			/* Default: Master on left, slaves on right */
-	{ "TTT",	bstack },		/* Master on top, slaves on bottom */
-
+	{ "###",	gaplessgrid },          /*grid layout*/
 	{ "[@]",	spiral },		/* Fibonacci spiral */
 	{ "[\\]",	dwindle },		/* Decreasing in size right and leftward */
 
@@ -149,7 +153,7 @@ static Key keys[] = {
 		{ MODKEY|ShiftMask,		XK_w,		spawn,		SHCMD("st -e sudo nmtui") },
 		{ MODKEY,			XK_e,		spawn,		SHCMD("st -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook") },
 		{ MODKEY|ShiftMask,		XK_e,		spawn,		SHCMD("st -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook") },
-		{ MODKEY,			XK_r,		spawn,		SHCMD("st -e lf") },
+		{ MODKEY,			XK_r,		spawn,		SHCMD("st -e lfub") },
 		{ MODKEY|ShiftMask,		XK_r,		spawn,		SHCMD("st -e htop") },
 		{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[1]} }, /* tile */
 		{ MODKEY|ShiftMask,		XK_t,		setlayout,	{.v = &layouts[2]} }, /* bstack */
